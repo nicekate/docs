@@ -1,0 +1,96 @@
+---
+title: 滑块组件
+description: Gradio 数值滑动选择组件
+---
+
+## 滑块输入
+
+Gradio 提供灵活的数值滑块输入方式。
+
+### 基本用法
+
+```python
+import gradio as gr
+
+def adjust_value(x):
+    return x * 2
+
+demo = gr.Interface(
+    fn=adjust_value,
+    inputs=gr.Slider(
+        minimum=0, 
+        maximum=100, 
+        label="选择数值"
+    ),
+    outputs=gr.Number(label="调整结果")
+)
+
+demo.launch()
+```
+
+### 滑块组件参数
+
+```python
+gr.Slider(
+    minimum=0,           # 最小值
+    maximum=100,         # 最大值
+    value=50,            # 默认值
+    step=1,              # 步进值
+    label="调整参数",     # 组件标签
+)
+```
+
+### 高级用法
+
+#### 浮点数滑块
+
+```python
+def process_float(value):
+    return value ** 0.5
+
+demo = gr.Interface(
+    fn=process_float,
+    inputs=gr.Slider(
+        minimum=0, 
+        maximum=1, 
+        step=0.1,
+        label="浮点数选择"
+    ),
+    outputs=gr.Number()
+)
+```
+
+### 常见场景
+
+1. 模型超参数调整
+2. 数据可视化
+3. 交互式参数探索
+4. 机器学习实验
+
+### 最佳实践
+
+- 设置合理的取值范围
+- 使用适当的步进值
+- 提供默认值
+- 添加清晰的标签
+
+### 错误处理
+
+```python
+def validate_slider(value):
+    if value < 0 or value > 100:
+        raise gr.Error("数值超出范围")
+    return value
+
+demo = gr.Interface(
+    fn=validate_slider,
+    inputs=gr.Slider(minimum=0, maximum=100),
+    outputs=gr.Number()
+)
+```
+
+### 性能提示
+
+- 对复杂计算使用缓存
+- 考虑异步处理
+- 限制滑块更新频率 

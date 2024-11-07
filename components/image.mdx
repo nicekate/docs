@@ -1,0 +1,106 @@
+---
+title: 图像组件
+description: Gradio 图像输入和输出组件
+---
+
+## 图像输入
+
+Gradio 提供多种灵活的图像输入方式。
+
+### 基本用法
+
+```python
+import gradio as gr
+
+def classify_image(image):
+    # 图像分类逻辑
+    return {"猫": 0.7, "狗": 0.3}
+
+demo = gr.Interface(
+    fn=classify_image,
+    inputs=gr.Image(type="pil"),
+    outputs=gr.Label()
+)
+
+demo.launch()
+```
+
+### 图像组件参数
+
+```python
+gr.Image(
+    source="upload",        # 图像来源
+    type="pil",             # 图像类型
+    shape=(224, 224),       # 图像尺寸
+    label="上传图像",        # 组件标签
+    width=300,              # 显示宽度
+    height=200,             # 显示高度
+)
+```
+
+### 输入来源
+
+- `upload`: 文件上传
+- `webcam`: 摄像头捕获
+- `canvas`: 绘图板
+
+### 图像处理示例
+
+```python
+def image_transform(image):
+    # 图像处理逻辑
+    return processed_image
+
+demo = gr.Interface(
+    fn=image_transform,
+    inputs=gr.Image(type="pil"),
+    outputs=gr.Image()
+)
+```
+
+### 高级用法
+
+#### 多图像处理
+
+```python
+def process_multiple_images(image1, image2):
+    # 处理两个图像
+    return combined_result
+
+demo = gr.Interface(
+    fn=process_multiple_images,
+    inputs=[
+        gr.Image(label="图像1"),
+        gr.Image(label="图像2")
+    ],
+    outputs=gr.Image()
+)
+```
+
+### 最佳实践
+
+- 指定合适的图像类型
+- 设置适当的图像尺寸
+- 考虑性能和内存使用
+- 添加清晰的标签和说明
+
+### 错误处理
+
+```python
+def validate_image(image):
+    if image is None:
+        raise gr.Error("请上传图像")
+    return image
+
+demo = gr.Interface(
+    fn=validate_image,
+    inputs=gr.Image(),
+    outputs=gr.Image()
+)
+```
+
+### 性能提示
+
+- 对大图像使用缩放
+- 考虑使用异步处理
+- 限制上传文件大小 

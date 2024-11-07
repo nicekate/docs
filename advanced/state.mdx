@@ -1,0 +1,101 @@
+---
+title: 状态管理
+description: Gradio 中的有状态接口和复杂状态处理
+---
+
+## 状态基础
+
+### 简单状态示例
+
+```python
+import gradio as gr
+
+def counter(x, count=0):
+    count += 1
+    return count
+
+demo = gr.Interface(
+    fn=counter,
+    inputs=gr.Number(),
+    outputs=gr.Number(),
+    state=True  # 启用状态
+)
+```
+
+## 复杂状态管理
+
+### 列表状态
+
+```python
+def manage_list(input_text, state=None):
+    if state is None:
+        state = []
+    state.append(input_text)
+    return state, state
+
+demo = gr.Interface(
+    fn=manage_list,
+    inputs=[gr.Textbox(), gr.State()],
+    outputs=[gr.Textbox(), gr.State()]
+)
+```
+
+### 字典状态
+
+```python
+def update_user_data(name, age, state=None):
+    if state is None:
+        state = {}
+    state[name] = age
+    return state, f"已更新 {name} 的年龄"
+
+demo = gr.Interface(
+    fn=update_user_data,
+    inputs=[
+        gr.Textbox(label="姓名"),
+        gr.Number(label="年龄"),
+        gr.State()
+    ],
+    outputs=[gr.State(), gr.Textbox()]
+)
+```
+
+## 状态持久化
+
+- 使用 `gr.State()` 保持复杂状态
+- 支持列表、字典等数据结构
+- 可在多次交互中传递和修改
+
+## 最佳实践
+
+- 初始化默认状态
+- 谨慎处理状态更新
+- 考虑内存使用
+- 使用不可变数据结构
+
+## 高级状态技巧
+
+### 有状态生成器
+
+```python
+def stateful_generator(input_text, state=None):
+    if state is None:
+        state = {"count": 0}
+    
+    state["count"] += 1
+    result = f"{input_text} (第 {state['count']} 次处理)"
+    
+    return result, state
+
+demo = gr.Interface(
+    fn=stateful_generator,
+    inputs=[gr.Textbox(), gr.State()],
+    outputs=[gr.Textbox(), gr.State()]
+)
+```
+
+### 注意事项
+
+- 状态在会话间不会持久保存
+- 每个用户有独立的状态上下文
+- 复杂状态可能影响性能 

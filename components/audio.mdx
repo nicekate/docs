@@ -1,0 +1,100 @@
+---
+title: 音频组件
+description: Gradio 音频输入和输出组件
+---
+
+## 音频输入
+
+Gradio 支持多种音频输入方式。
+
+### 基本用法
+
+```python
+import gradio as gr
+
+def transcribe(audio):
+    # 语音转文字逻辑
+    return "转录的文本"
+
+demo = gr.Interface(
+    fn=transcribe,
+    inputs=gr.Audio(source="microphone"),
+    outputs=gr.Textbox()
+)
+
+demo.launch()
+```
+
+### 音频组件参数
+
+```python
+gr.Audio(
+    source="upload",        # 音频来源
+    type="filepath",        # 音频类型
+    label="上传音频",        # 组件标签
+    format="wav",           # 音频格式
+)
+```
+
+### 音频来源
+
+- `upload`: 文件上传
+- `microphone`: 麦克风录制
+
+### 音频处理示例
+
+```python
+def audio_process(audio):
+    # 音频处理逻辑
+    return processed_audio
+
+demo = gr.Interface(
+    fn=audio_process,
+    inputs=gr.Audio(type="filepath"),
+    outputs=gr.Audio()
+)
+```
+
+### 高级用法
+
+#### 音频转换
+
+```python
+def convert_audio(audio):
+    # 音频格式转换
+    return converted_audio
+
+demo = gr.Interface(
+    fn=convert_audio,
+    inputs=gr.Audio(),
+    outputs=gr.Audio()
+)
+```
+
+### 最佳实践
+
+- 指定合适的音频类型
+- 设置音频格式
+- 考虑音频处理性能
+- 添加清晰的标签
+
+### 错误处理
+
+```python
+def validate_audio(audio):
+    if audio is None:
+        raise gr.Error("请上传音频")
+    return audio
+
+demo = gr.Interface(
+    fn=validate_audio,
+    inputs=gr.Audio(),
+    outputs=gr.Audio()
+)
+```
+
+### 性能提示
+
+- 对大音频文件使用流式处理
+- 考虑使用异步处理
+- 限制上传文件大小 

@@ -1,0 +1,91 @@
+---
+title: 认证与访问控制
+description: Gradio 应用的用户认证和安全机制
+---
+
+## 基本认证
+
+### 静态用户名密码
+
+```python
+import gradio as gr
+
+def predict(input):
+    return process(input)
+
+demo = gr.Interface(
+    fn=predict,
+    inputs=gr.Textbox(),
+    outputs=gr.Textbox(),
+    auth=("username", "password")
+)
+
+demo.launch()
+```
+
+## 自定义认证函数
+
+```python
+def auth_checker(username, password):
+    # 自定义认证逻辑
+    valid_users = {
+        "admin": "secret_pass",
+        "user": "user_pass"
+    }
+    return valid_users.get(username) == password
+
+demo = gr.Interface(
+    fn=predict,
+    inputs=gr.Textbox(),
+    outputs=gr.Textbox(),
+    auth=auth_checker
+)
+```
+
+## 高级认证场景
+
+### 数据库认证
+
+```python
+import sqlite3
+
+def database_auth(username, password):
+    conn = sqlite3.connect('users.db')
+    cursor = conn.cursor()
+    
+    cursor.execute(
+        "SELECT * FROM users WHERE username=? AND password=?", 
+        (username, password)
+    )
+    
+    return cursor.fetchone() is not None
+```
+
+## 安全最佳实践
+
+- 使用安全的密码存储
+- 实施密码复杂度要求
+- 限制登录尝试次数
+- 使用加密传输
+
+## 访问控制
+
+### 角色基础访问控制
+
+```python
+def role_based_access(username, password):
+    roles = {
+        "admin": ["full_access"],
+        "user": ["limited_access"]
+    }
+    
+    if auth_successful(username, password):
+        return roles.get(username, [])
+    return []
+```
+
+### 注意事项
+
+- 认证不等同于完全安全
+- 始终使用 HTTPS
+- 定期审计和更新认证机制 

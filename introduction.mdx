@@ -1,71 +1,82 @@
 ---
-title: Introduction
-description: 'Welcome to the home of your new documentation'
+title: Gradio 简介
+description: 快速构建机器学习演示的 Python 库
 ---
 
-<img
-  className="block dark:hidden"
-  src="/images/hero-light.svg"
-  alt="Hero Light"
-/>
-<img
-  className="hidden dark:block"
-  src="/images/hero-dark.svg"
-  alt="Hero Dark"
-/>
+## 什么是 Gradio？
 
-## Setting up
+Gradio 是一个强大的 Python 库，专为机器学习工程师和数据科学家设计，旨在：
 
-The first step to world-class documentation is setting up your editing environments.
+- 快速为模型创建交互式 Web 界面
+- 轻松分享和演示 AI 项目
+- 支持各种机器学习任务的可视化
 
 <CardGroup cols={2}>
   <Card
-    title="Edit Your Docs"
-    icon="pen-to-square"
-    href="https://mintlify.com/docs/quickstart"
+    title="快速创建演示"
+    icon="rocket"
+    href="/quickstart"
   >
-    Get your docs set up locally for easy development
+    3行代码创建交互界面
   </Card>
   <Card
-    title="Preview Changes"
-    icon="image"
-    href="https://mintlify.com/docs/development"
+    title="多样化组件"
+    icon="puzzle-piece"
+    href="/components"
   >
-    Preview your changes before you push to make sure they're perfect
+    支持图像、文本、音频等多种输入输出
   </Card>
 </CardGroup>
 
-## Make it yours
+## 为什么选择 Gradio？
 
-Update your docs to your brand and add valuable content for the best user conversion.
+1. **简单易用**：无需 Web 开发经验
+   - 直观的 API
+   - 最小化代码复杂度
+   - 快速原型开发
 
-<CardGroup cols={2}>
-  <Card
-    title="Customize Style"
-    icon="palette"
-    href="https://mintlify.com/docs/settings/global"
-  >
-    Customize your docs to your company's colors and brands
-  </Card>
-  <Card
-    title="Reference APIs"
-    icon="code"
-    href="https://mintlify.com/docs/api-playground/openapi"
-  >
-    Automatically generate endpoints from an OpenAPI spec
-  </Card>
-  <Card
-    title="Add Components"
-    icon="screwdriver-wrench"
-    href="https://mintlify.com/docs/components/accordion"
-  >
-    Build interactive features and designs to guide your users
-  </Card>
-  <Card
-    title="Get Inspiration"
-    icon="stars"
-    href="https://mintlify.com/customers"
-  >
-    Check out our showcase of our favorite documentation
-  </Card>
-</CardGroup>
+2. **高度可定制**：灵活的界面设计
+   - 支持多种组件
+   - 可自定义样式
+   - 适应不同应用场景
+
+3. **轻松分享**：一键生成可共享链接
+   - 临时公共 URL
+   - Hugging Face Spaces 集成
+   - 简单的部署流程
+
+4. **与生态系统集成**：深度支持 Hugging Face
+   - 无缝对接 Hugging Face 模型
+   - 支持模型仓库
+   - 简化模型展示
+
+## 支持的应用场景
+
+- 机器学习模型演示
+- 数据科学可视化
+- AI 原型快速开发
+- 教育和研究展示
+- 交互式模型解释
+
+## 快速上手示例
+
+```python
+import gradio as gr
+
+def greet(name):
+    return f"Hello, {name}!"
+
+demo = gr.Interface(
+    fn=greet,
+    inputs="text", 
+    outputs="text"
+)
+
+demo.launch()
+```
+
+## 开始您的 Gradio 之旅
+
+- [快速开始](/quickstart)
+- [组件文档](/components)
+- [高级主题](/advanced)

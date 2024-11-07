@@ -1,0 +1,89 @@
+---
+title: 模型分享
+description: 使用 Gradio 分享和部署机器学习模型
+---
+
+## 公共链接
+
+### 临时公共链接
+
+```python
+import gradio as gr
+
+def predict(input):
+    return process(input)
+
+demo = gr.Interface(
+    fn=predict,
+    inputs=gr.Textbox(),
+    outputs=gr.Textbox()
+)
+
+# 生成可公开访问的链接
+demo.launch(share=True)
+```
+
+## Hugging Face 集成
+
+### 推送到 Hugging Face Spaces
+
+```python
+import gradio as gr
+import huggingface_hub
+
+demo = gr.Interface(
+    fn=predict,
+    inputs=gr.Textbox(),
+    outputs=gr.Textbox()
+)
+
+# 直接部署到 Hugging Face
+demo.launch(
+    share=True, 
+    server_name="0.0.0.0",
+    server_port=7860
+)
+```
+
+## 部署选项
+
+### 本地服务器
+
+```python
+demo.launch(
+    server_name="0.0.0.0",  # 允许外部访问
+    server_port=7860,        # 自定义端口
+    debug=True               # 调试模式
+)
+```
+
+### 自定义域名
+
+- 使用反向代理
+- Nginx 配置
+- 云平台部署
+
+## 分享最佳实践
+
+- 使用 `share=True` 生成临时链接
+- 集成 Hugging Face Spaces
+- 配置服务器安全性
+- 注意敏感数据保护
+
+## 高级分享技巧
+
+### 限时链接
+
+```python
+import threading
+
+def close_demo_after_time(demo, seconds):
+    def stop_demo():
+        demo.close()
+    
+    timer = threading.Timer(seconds, stop_demo)
+    timer.start()
+
+demo.launch(share=True)
+close_demo_after_time(demo, 3600)  # 1小时后关闭
+``` 

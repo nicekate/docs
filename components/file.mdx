@@ -1,0 +1,89 @@
+---
+title: 文件组件
+description: Gradio 文件上传和处理组件
+---
+
+## 文件输入
+
+Gradio 提供灵活的文件上传方式。
+
+### 基本用法
+
+```python
+import gradio as gr
+
+def process_file(file):
+    # 文件处理逻辑
+    return f"文件名: {file.name}, 大小: {len(file.read())} 字节"
+
+demo = gr.Interface(
+    fn=process_file,
+    inputs=gr.File(label="上传文件"),
+    outputs=gr.Textbox(label="文件信息")
+)
+
+demo.launch()
+```
+
+### 文件组件参数
+
+```python
+gr.File(
+    label="文件上传",        # 组件标签
+    file_count="single",    # 文件数量 single/multiple
+    type="file",            # 文件类型
+    accepted_types=[".txt", ".pdf"]  # 允许的文件类型
+)
+```
+
+### 高级用法
+
+#### 多文件上传
+
+```python
+def process_multiple_files(files):
+    return [f"文件 {f.name}" for f in files]
+
+demo = gr.Interface(
+    fn=process_multiple_files,
+    inputs=gr.File(file_count="multiple"),
+    outputs=gr.Textbox()
+)
+```
+
+### 常见场景
+
+1. 文档处理
+2. 数据集上传
+3. 模型输入文件
+4. 文件分析
+
+### 最佳实践
+
+- 限制文件类型
+- 设置文件大小限制
+- 提供清晰的上传说明
+- 添加文件验证
+
+### 错误处理
+
+```python
+def validate_file(file):
+    if file is None:
+        raise gr.Error("请上传文件")
+    if file.size > 10_000_000:  # 10MB限制
+        raise gr.Error("文件过大")
+    return file.name
+
+demo = gr.Interface(
+    fn=validate_file,
+    inputs=gr.File(),
+    outputs=gr.Textbox()
+)
+```
+
+### 性能提示
+
+- 对大文件使用流式处理
+- 考虑异步文件处理
+- 添加文件缓存机制 

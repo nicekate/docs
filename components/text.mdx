@@ -1,0 +1,114 @@
+---
+title: 文本组件
+description: Gradio 文本输入和输出组件
+---
+
+## 文本输入 (Textbox)
+
+Gradio 的文本组件允许用户输入和显示文本，支持多种配置和使用场景。
+
+### 基本用法
+
+```python
+import gradio as gr
+
+def greet(name):
+    return f"Hello, {name}!"
+
+demo = gr.Interface(
+    fn=greet,
+    inputs=gr.Textbox(label="输入你的名字"),
+    outputs=gr.Textbox(label="问候语")
+)
+
+demo.launch()
+```
+
+### 参数配置
+
+#### 输入文本框
+
+```python
+gr.Textbox(
+    label="用户名",           # 组件标签
+    placeholder="请输入名字",  # 占位文本
+    value="默认值",           # 默认值
+    lines=1,                 # 文本框行数
+    max_lines=3,             # 最大行数
+    type="text",             # 输入类型
+)
+```
+
+#### 输出文本框
+
+```python
+gr.Textbox(
+    label="结果",
+    lines=3,                 # 显示行数
+    max_lines=5,             # 最大行数
+)
+```
+
+### 高级用法
+
+#### 多行文本
+
+```python
+def process_text(text):
+    return text.split()
+
+demo = gr.Interface(
+    fn=process_text,
+    inputs=gr.Textbox(lines=4, label="输入多行文本"),
+    outputs=gr.Textbox(label="单词数量")
+)
+```
+
+#### 密码输入
+
+```python
+gr.Textbox(type="password", label="密码")
+```
+
+### 常见场景
+
+1. 文本生成
+2. 文本分类
+3. 翻译
+4. 聊天机器人
+5. 提示词工程
+
+### 输入类型
+
+- `text`: 普通文本
+- `password`: 密码输入
+- `email`: 电子邮件
+- `number`: 数字输入
+
+### 最佳实践
+
+- 为文本框添加清晰的标签
+- 使用 `placeholder` 提供输入提示
+- 根据预期输入设置 `lines` 和 `max_lines`
+- 对于敏感信息使用 `type="password"`
+
+### 错误处理
+
+```python
+def validate_input(text):
+    if len(text) < 3:
+        raise gr.Error("输入太短")
+    return text.upper()
+
+demo = gr.Interface(
+    fn=validate_input,
+    inputs=gr.Textbox(label="验证输入"),
+    outputs=gr.Textbox(label="大写结果")
+)
+```
+
+### 性能提示
+
+- 对于大量文本，考虑使用 `lines` 和 `max_lines`
+- 长文本处理使用异步函数
+- 添加输入验证以提高用户体验

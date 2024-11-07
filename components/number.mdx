@@ -1,0 +1,94 @@
+---
+title: 数字组件
+description: Gradio 数字输入和输出组件
+---
+
+## 数字输入
+
+Gradio 提供灵活的数字输入方式。
+
+### 基本用法
+
+```python
+import gradio as gr
+
+def square(x):
+    return x ** 2
+
+demo = gr.Interface(
+    fn=square,
+    inputs=gr.Number(label="输入数字"),
+    outputs=gr.Number(label="平方结果")
+)
+
+demo.launch()
+```
+
+### 数字组件参数
+
+```python
+gr.Number(
+    label="数值输入",        # 组件标签
+    value=0,                # 默认值
+    minimum=0,              # 最小值
+    maximum=100,            # 最大值
+    step=1,                 # 步进值
+    precision=2             # 小数位数
+)
+```
+
+### 高级用法
+
+#### 范围限制
+
+```python
+def validate_age(age):
+    if age < 0 or age > 120:
+        raise gr.Error("年龄范围不合法")
+    return f"有效年龄: {age}"
+
+demo = gr.Interface(
+    fn=validate_age,
+    inputs=gr.Number(
+        label="年龄", 
+        minimum=0, 
+        maximum=120
+    ),
+    outputs=gr.Textbox()
+)
+```
+
+### 常见场景
+
+1. 数学计算
+2. 参数调整
+3. 统计分析
+4. 模型超参数设置
+
+### 最佳实践
+
+- 设置合理的取值范围
+- 使用 `step` 控制精度
+- 添加输入验证
+- 提供清晰的标签和说明
+
+### 错误处理
+
+```python
+def process_number(x):
+    if x == 0:
+        raise gr.Error("不能为零")
+    return 1 / x
+
+demo = gr.Interface(
+    fn=process_number,
+    inputs=gr.Number(label="输入数字"),
+    outputs=gr.Number(label="结果")
+)
+```
+
+### 性能提示
+
+- 对于复杂计算，考虑异步处理
+- 限制输入范围以提高性能
+- 添加缓存机制 

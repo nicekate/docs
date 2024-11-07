@@ -1,32 +1,60 @@
-# Mintlify Starter Kit
+# Gradio 使用手册
 
-Click on `Use this template` to copy the Mintlify starter kit. The starter kit contains examples including
+Gradio 是一个快速、简单的 Python 库，用于为机器学习模型和数据科学项目构建交互式 Web 界面。
 
-- Guide pages
-- Navigation
-- Customizations
-- API Reference pages
-- Use of popular components
+## 主要特性
 
-### Development
+- 快速创建机器学习演示
+- 支持多种输入和输出类型
+- 简单的界面定制
+- 轻松分享和嵌入模型
+- 与 Hugging Face 生态系统深度集成
 
-Install the [Mintlify CLI](https://www.npmjs.com/package/mintlify) to preview the documentation changes locally. To install, use the following command
+### 安装
 
+使用 pip 安装 Gradio：
+
+```bash
+pip install gradio
 ```
+
+### 快速示例
+
+```python
+import gradio as gr
+
+def greet(name):
+    return f"Hello, {name}!"
+
+demo = gr.Interface(
+    fn=greet, 
+    inputs="text", 
+    outputs="text"
+)
+
+demo.launch()
+```
+
+### 文档开发
+
+如果您想本地预览文档：
+
+1. 安装 Mintlify CLI
+```bash
 npm i -g mintlify
 ```
 
-Run the following command at the root of your documentation (where mint.json is)
-
-```
+2. 在文档根目录运行
+```bash
 mintlify dev
 ```
 
-### Publishing Changes
+### 项目资源
 
-Install our Github App to auto propagate changes from your repo to your deployment. Changes will be deployed to production automatically after pushing to the default branch. Find the link to install on your dashboard. 
+- [官方文档](https://gradio.app/docs)
+- [GitHub 仓库](https://github.com/gradio-app/gradio)
+- [Hugging Face 主页](https://huggingface.co/spaces/gradio)
 
-#### Troubleshooting
+### 贡献
 
-- Mintlify dev isn't running - Run `mintlify install` it'll re-install dependencies.
-- Page loads as a 404 - Make sure you are running in a folder with `mint.json`
+欢迎提交 Issues 和 Pull Requests！

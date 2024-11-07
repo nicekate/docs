@@ -1,0 +1,92 @@
+---
+title: 标签组件
+description: Gradio 标签输出组件
+---
+
+## 标签显示
+
+Gradio 的标签组件用于展示分类或概率结果。
+
+### 基本用法
+
+```python
+import gradio as gr
+
+def classify_fruit(image):
+    # 模拟图像分类
+    return {
+        "苹果": 0.7, 
+        "香蕉": 0.2, 
+        "橘子": 0.1
+    }
+
+demo = gr.Interface(
+    fn=classify_fruit,
+    inputs=gr.Image(),
+    outputs=gr.Label()
+)
+
+demo.launch()
+```
+
+### 标签组件参数
+
+```python
+gr.Label(
+    label="分类结果",        # 组件标签
+    num_top_classes=3,      # 显示top N类别
+)
+```
+
+### 高级用法
+
+#### 自定义标签展示
+
+```python
+def custom_label_format(prediction):
+    # 自定义标签格式
+    return {
+        k: f"{v*100:.2f}%" for k, v in prediction.items()
+    }
+
+demo = gr.Interface(
+    fn=custom_label_format,
+    inputs=gr.Textbox(),
+    outputs=gr.Label()
+)
+```
+
+### 常见场景
+
+1. 图像分类
+2. 文本分类
+3. 情感分析
+4. 模型置信度展示
+
+### 最佳实践
+
+- 展示置信度
+- 限制显示类别数量
+- 使用颜色区分置信度
+- 提供清晰的标签解释
+
+### 错误处理
+
+```python
+def validate_prediction(prediction):
+    if not prediction:
+        raise gr.Error("无效的预测结果")
+    return prediction
+
+demo = gr.Interface(
+    fn=validate_prediction,
+    inputs=gr.Textbox(),
+    outputs=gr.Label()
+)
+```
+
+### 性能提示
+
+- 对于大量类别，考虑分页
+- 使用缓存机制
+- 异步处理复杂分类 

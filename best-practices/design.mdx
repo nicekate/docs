@@ -1,0 +1,81 @@
+---
+title: Gradio 界面设计
+description: 创建直观、用户友好的 Gradio 界面
+---
+
+## 界面设计原则
+
+### 1. 清晰的布局
+
+```python
+import gradio as gr
+
+with gr.Blocks() as demo:
+    with gr.Row():
+        input1 = gr.Textbox(label="输入")
+        output1 = gr.Textbox(label="输出")
+    
+    with gr.Column():
+        btn = gr.Button("处理")
+        btn.click(process_fn, inputs=input1, outputs=output1)
+```
+
+### 2. 响应式组件
+
+```python
+gr.Textbox(
+    label="描述",
+    placeholder="输入详细描述",
+    interactive=True
+)
+```
+
+### 3. 错误处理与提示
+
+```python
+def validate_input(text):
+    if not text:
+        raise gr.Error("输入不能为空")
+    return text.upper()
+
+demo = gr.Interface(
+    fn=validate_input,
+    inputs=gr.Textbox(),
+    outputs=gr.Textbox()
+)
+```
+
+### 4. 交互式反馈
+
+- 使用进度条
+- 实时更新
+- 清晰的状态指示
+
+```python
+with gr.Blocks() as demo:
+    progress = gr.Textbox(label="状态")
+    start_btn = gr.Button("开始")
+```
+
+### 5. 可访问性
+
+- 添加清晰的标签
+- 支持键盘导航
+- 提供足够的颜色对比
+
+### 6. 主题定制
+
+```python
+demo = gr.Interface(
+    theme=gr.themes.Soft(),
+    # 其他配置
+)
+```
+
+## 设计检查清单
+
+- [ ] 简洁明了的界面
+- [ ] 直观的交互流程
+- [ ] 友好的错误消息
+- [ ] 响应式设计
+- [ ] 一致的视觉风格 

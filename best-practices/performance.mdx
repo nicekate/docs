@@ -1,0 +1,76 @@
+---
+title: Gradio 性能优化
+description: 提高 Gradio 应用性能的最佳实践
+---
+
+## 性能优化策略
+
+### 1. 异步处理
+
+```python
+import gradio as gr
+import asyncio
+
+async def long_running_task(input_text):
+    # 模拟耗时操作
+    await asyncio.sleep(2)
+    return f"处理完成: {input_text}"
+
+demo = gr.Interface(
+    fn=long_running_task,
+    inputs=gr.Textbox(),
+    outputs=gr.Textbox()
+)
+```
+
+### 2. 缓存结果
+
+```python
+import gradio as gr
+
+@gr.cache
+def expensive_computation(x):
+    # 复杂计算
+    return x * x
+```
+
+### 3. 批量处理
+
+```python
+def batch_process(inputs):
+    # 一次性处理多个输入
+    return [process_single(x) for x in inputs]
+
+demo = gr.Interface(
+    fn=batch_process,
+    inputs=gr.Textbox(lines=3),
+    outputs=gr.Textbox()
+)
+```
+
+### 4. 内存管理
+
+- 避免在界面函数中存储大量数据
+- 使用生成器处理大型数据集
+- 及时释放不需要的资源
+
+### 5. 并发控制
+
+```python
+demo = gr.Interface(
+    fn=process_function,
+    concurrency_limit=5  # 限制并发数
+)
+```
+
+## 性能监控
+
+- 使用 Python 性能分析工具
+- 记录函数执行时间
+- 监控内存使用情况
+
+### 推荐工具
+
+- `cProfile`
+- `memory_profiler`
+- `line_profiler` 

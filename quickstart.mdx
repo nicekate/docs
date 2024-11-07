@@ -1,86 +1,110 @@
 ---
-title: 'Quickstart'
-description: 'Start building awesome documentation in under 5 minutes'
+title: 快速开始
+description: 3分钟上手 Gradio
 ---
 
-## Setup your development
+## 安装 Gradio
 
-Learn how to update your docs locally and deploy them to the public.
+首先，使用 pip 安装 Gradio：
 
-### Edit and preview
+```bash
+pip install gradio
+```
 
-<AccordionGroup>
-  <Accordion icon="github" title="Clone your docs locally">
-    During the onboarding process, we created a repository on your Github with
-    your docs content. You can find this repository on our
-    [dashboard](https://dashboard.mintlify.com). To clone the repository
-    locally, follow these
-    [instructions](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository)
-    in your terminal.
-  </Accordion>
-  <Accordion icon="rectangle-terminal" title="Preview changes">
-    Previewing helps you make sure your changes look as intended. We built a
-    command line interface to render these changes locally. 1. Install the
-    [Mintlify CLI](https://www.npmjs.com/package/mintlify) to preview the
-    documentation changes locally with this command: ``` npm i -g mintlify ```
-    2. Run the following command at the root of your documentation (where
-    `mint.json` is): ``` mintlify dev ```
-  </Accordion>
-</AccordionGroup>
+## 第一个 Gradio 应用
 
-### Deploy your changes
+### 文本生成演示
 
-<AccordionGroup>
+```python
+import gradio as gr
 
-<Accordion icon="message-bot" title="Install our Github app">
-  Our Github app automatically deploys your changes to your docs site, so you
-  don't need to manage deployments yourself. You can find the link to install on
-  your [dashboard](https://dashboard.mintlify.com). Once the bot has been
-  successfully installed, there should be a check mark next to the commit hash
-  of the repo.
-</Accordion>
-<Accordion icon="rocket" title="Push your changes">
-  [Commit and push your changes to
-  Git](https://docs.github.com/en/get-started/using-git/pushing-commits-to-a-remote-repository#about-git-push)
-  for your changes to update in your docs site. If you push and don't see that
-  the Github app successfully deployed your changes, you can also manually
-  update your docs through our [dashboard](https://dashboard.mintlify.com).
-</Accordion>
+def generate_text(prompt):
+    # 这里是一个简单的文本生成示例
+    # 在实际应用中，您可以替换为真实的 AI 模型
+    return f"生成的文本: {prompt}"
 
-</AccordionGroup>
+demo = gr.Interface(
+    fn=generate_text,
+    inputs=gr.Textbox(label="输入提示词"),
+    outputs=gr.Textbox(label="生成结果")
+)
 
-## Update your docs
+demo.launch()
+```
 
-Add content directly in your files with MDX syntax and React components. You can use any of our components, or even build your own.
+## 不同类型的界面
 
-<CardGroup>
+### 图像分类
 
-<Card title="Style Your Docs" icon="paintbrush" href="/settings/global">
-  Add flair to your docs with personalized branding.
-</Card>
+```python
+import gradio as gr
+import numpy as np
+from PIL import Image
 
-<Card
-  title="Add API Endpoints"
-  icon="square-code"
-  href="/api-playground/configuration"
->
-  Implement your OpenAPI spec and enable API user interaction.
-</Card>
+def classify_image(image):
+    # 模拟图像分类
+    # 实际应用中应使用真实的机器学习模型
+    classes = {
+        "猫": 0.7, 
+        "狗": 0.3
+    }
+    return classes
 
-<Card
-  title="Integrate Analytics"
-  icon="chart-mixed"
-  href="/analytics/supported-integrations"
->
-  Draw insights from user interactions with your documentation.
-</Card>
+demo = gr.Interface(
+    fn=classify_image,
+    inputs=gr.Image(type="pil", label="上传图像"),
+    outputs=gr.Label(label="分类结果")
+)
 
-<Card
-  title="Host on a Custom Domain"
-  icon="browser"
-  href="/settings/custom-domain/subdomain"
->
-  Keep your docs on your own website's subdomain.
-</Card>
+demo.launch()
+```
 
-</CardGroup>
+## 高级配置
+
+### 多输入/输出界面
+
+```python
+import gradio as gr
+
+def process_data(text, number):
+    return {
+        "处理后的文本": text.upper(),
+        "数字平方": number ** 2
+    }
+
+demo = gr.Interface(
+    fn=process_data,
+    inputs=[
+        gr.Textbox(label="输入文本"),
+        gr.Number(label="输入数字")
+    ],
+    outputs=[
+        gr.Textbox(label="大写文本"),
+        gr.Number(label="数字平方")
+    ]
+)
+
+demo.launch()
+```
+
+## 常见界面类型
+
+1. `gr.Interface()`: 最简单的界面
+2. `gr.Blocks()`: 更复杂的自定义布局
+3. `gr.TabbedInterface()`: 多标签界面
+
+## 部署与分享
+
+- 使用 `share=True` 生成临时公共链接
+- 集成 Hugging Face Spaces
+- 自定义域名部署
+
+```python
+demo.launch(share=True)  # 生成临时链接
+```
+
+## 下一步
+
+- 探索组件文档
+- 查看高级配置
+- 加入 Gradio 社区
